@@ -36,13 +36,13 @@ public class LunaClimb extends SubsystemBase {
   }
 
   public void closeLunaClaw(){
-    m_LunaClawL.set(true);
-    m_LunaClawR.set(true);
+    m_LunaClawL.set(false);
+    m_LunaClawR.set(false);
   }
 
   public void openLunaClaw(){
-    m_LunaClawL.set(false);
-    m_LunaClawR.set(false);
+    m_LunaClawL.set(true);
+    m_LunaClawR.set(true);
   }
 
   @Override

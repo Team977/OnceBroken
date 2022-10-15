@@ -387,13 +387,11 @@ public class RobotContainer {
   }
 
   public static double getPosChoice(){
-    return 2.0;
-    //return(pos_chooser.getSelected());
+    return(pos_chooser.getSelected());
   }
   
   public static double getBallChoice(){
-    return 2.0;
-    //return(ball_chooser.getSelected());
+    return(ball_chooser.getSelected());
   }
 
   public static int getClimbStage(){
