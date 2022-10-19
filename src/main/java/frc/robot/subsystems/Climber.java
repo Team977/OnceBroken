@@ -46,7 +46,7 @@ public class Climber extends SubsystemBase {
     m_SolLeftMotor.getEncoder().setPosition(0.0);
     m_SolRightMotor.getEncoder().setPosition(0.0);
 
-    m_SolLeftMotor.setSoftLimit(SoftLimitDirection.kForward, 169);
+    m_SolLeftMotor.setSoftLimit(SoftLimitDirection.kForward, 179);
     
     m_SolRightMotor.setSoftLimit(SoftLimitDirection.kForward, 179);
     
@@ -62,7 +62,7 @@ public class Climber extends SubsystemBase {
     m_SolLeftMotor.set(0.0);
     m_SolLeftMotor.getEncoder().setPosition(0.0);
     } else {
-      if (m_SolLeftMotor.getEncoder().getPosition()<20){
+      if (m_SolLeftMotor.getEncoder().getPosition()<40){
         m_SolLeftMotor.set(speed/4);
       } else {
         m_SolLeftMotor.set(speed);
@@ -73,7 +73,7 @@ public class Climber extends SubsystemBase {
       m_SolRightMotor.set(0.0);
       m_SolRightMotor.getEncoder().setPosition(0.0);
       } else {      
-        if (m_SolLeftMotor.getEncoder().getPosition()<20){
+        if (m_SolLeftMotor.getEncoder().getPosition()<40){
        
         m_SolRightMotor.set(speed/4);
       } else {

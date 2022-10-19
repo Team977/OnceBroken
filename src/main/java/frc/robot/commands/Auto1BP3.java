@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -24,10 +25,11 @@ public class Auto1BP3 extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new SequentialCommandGroup(
+        new SetOdometryAdjustment(m_drive, Constants.pos3X, Constants.pos3Y, Constants.pos3theta),
         new SequentialCommandGroup(
           new ParallelRaceGroup(
             new AutoIntakeStart(m_intake),
-            new ProfiledOdometryDrive(m_drive, Constants.ball3Xpos,Constants.ball3Ypos, -44).withTimeout(2.0)
+            new ProfiledOdometryDrive(m_drive, Constants.ball3Xpos,Constants.ball3Ypos, Constants.pos3theta).withTimeout(2.0)
           ),
           new AutoIntakeEnd(m_intake),
           new LimelightActivate(m_limelight),
@@ -36,17 +38,17 @@ public class Auto1BP3 extends SequentialCommandGroup {
         ),
         new SequentialCommandGroup(
           new ParallelCommandGroup(
-            new KickerReverse(m_intake).withTimeout(0.25),
-            new ShooterReverse(m_shooter).withTimeout(0.25),
+            new KickerReverse(m_intake).withTimeout(Constants.shooterReverseTime),
+            new ShooterReverse(m_shooter).withTimeout(Constants.shooterReverseTime),
             new LimelightActivate(m_limelight)
           ), 
           new WaitCommand(0.1),
           new ParallelRaceGroup( 
             new SetShooterRPM(m_shooter, m_limelight, true).withTimeout(3.5), //BRB used SetShooterRPMTest here
             new SequentialCommandGroup(
-              new WaitCommand(0.75),
+              new WaitCommand(Constants.kickItWaitTime),
               new KickerKickIt(m_intake), 
-              new WaitCommand(3.0)
+              new WaitCommand(Constants.shooterAutoTime)
             )
           )
         ),
@@ -54,7 +56,8 @@ public class Auto1BP3 extends SequentialCommandGroup {
           new LimelightDeactivate(m_limelight), 
           new ShooterStop(m_shooter), 
           new KickerStop(m_intake), 
-          new IntakeStop(m_intake)
+          new IntakeStop(m_intake),
+          new SetGyroAdjustmentTeleop(m_drive)
         )
 
       )

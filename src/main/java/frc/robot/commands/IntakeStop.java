@@ -25,6 +25,8 @@ public class IntakeStop extends CommandBase {
   public void execute() {
     
     m_subsystem.setIntakeSpeed(0.0);
+    m_subsystem.disengageKicker();
+
   }
 
   // Called once the command ends or is interrupted.

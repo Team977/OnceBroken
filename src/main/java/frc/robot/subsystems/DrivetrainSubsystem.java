@@ -32,7 +32,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * <p>
    * This can be reduced to cap the robot's maximum speed. Typically, this is useful during initial testing of the robot.
    */
-  public static final double MAX_VOLTAGE = 12.0;//BRB 6.0;//12
+  public static final double MAX_VOLTAGE = 10.0;//BRB 6.0;//12
   //  The formula for calculating the theoretical maximum velocity is:
   //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
   //  By default this value is setup for a Mk3 standard module using Falcon500s to drive.
@@ -180,26 +180,38 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void zeroGyroscope() {
     DrivetrainSubsystem.gyro_angle_adjust = 0.0;
     m_navx.zeroYaw();
+    //m_navx.setAngleAdjustment(0.0);
   }
 
   public Rotation2d getGyroscopeRotation() {
 
+        return Rotation2d.fromDegrees(-m_navx.getYaw());
+/*
     if (m_navx.isMagnetometerCalibrated()) {
      // We will only get valid fused headings if the magnetometer is calibrated
         //return Rotation2d.fromDegrees(m_navx.getFusedHeading());
-        return Rotation2d.fromDegrees(-m_navx.getYaw());//-DrivetrainSubsystem.gyro_angle_adjust);
+        double tempAngle = -m_navx.getYaw()-DrivetrainSubsystem.gyro_angle_adjust;
+        if (tempAngle < -180) tempAngle = tempAngle+360;
+        if (tempAngle > 180) tempAngle = tempAngle-360;
+        return Rotation2d.fromDegrees(tempAngle);
+        //return Rotation2d.fromDegrees(-m_navx.getAngle());
         //return Rotation2d.fromDegrees(-m_navx.getYaw());
-
    }
 
     // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
      //return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
-     return Rotation2d.fromDegrees(-m_navx.getYaw());//-DrivetrainSubsystem.gyro_angle_adjust);
+     double tempAngle = -m_navx.getYaw()-DrivetrainSubsystem.gyro_angle_adjust;
+     if (tempAngle < -180) tempAngle = tempAngle+360;
+     if (tempAngle > 180) tempAngle = tempAngle-360;
+     return Rotation2d.fromDegrees(tempAngle);
+     //return Rotation2d.fromDegrees(-m_navx.getYaw());//-DrivetrainSubsystem.gyro_angle_adjust);
      //return Rotation2d.fromDegrees(-m_navx.getYaw());
+
+     */
   }
 
   public void setGyroStart(double angle){
-        DrivetrainSubsystem.gyro_angle_adjust = -angle;
+        DrivetrainSubsystem.gyro_angle_adjust = angle; //was negative
   }
 
   public void drive(ChassisSpeeds chassisSpeeds) {
@@ -235,7 +247,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 }
 
         public void setOdometryOffset(double x, double y, double angle){
-                m_odometry.resetPosition(new Pose2d(x,y, new Rotation2d(angle)), getGyroscopeRotation());
+                m_odometry.resetPosition(new Pose2d(x,y, Rotation2d.fromDegrees(angle)), getGyroscopeRotation());
         }
 
 

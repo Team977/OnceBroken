@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -22,12 +23,14 @@ public class Auto2BP1 extends SequentialCommandGroup {
   public Auto2BP1(DrivetrainSubsystem m_drive, Shooter m_shooter, Limelight m_limelight, Intake m_intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
+    
     addCommands(
       new SequentialCommandGroup(
+        new SetOdometryAdjustment(m_drive, Constants.pos1X, Constants.pos1Y, Constants.pos1theta),
         new SequentialCommandGroup(
           new ParallelRaceGroup(
             new AutoIntakeStart(m_intake),
-            new OdometryDriveCommand(m_drive, Constants.ball1Xpos,Constants.ball1Ypos, 88.5).withTimeout(2.0)
+            new OdometryDriveCommand(m_drive, Constants.ball1Xpos,Constants.ball1Ypos, Constants.pos1theta).withTimeout(2.0)
           ),
           new AutoIntakeEnd(m_intake),
           new LimelightActivate(m_limelight),
@@ -36,17 +39,17 @@ public class Auto2BP1 extends SequentialCommandGroup {
         ),
         new SequentialCommandGroup(
           new ParallelCommandGroup(
-            new KickerReverse(m_intake).withTimeout(0.25),
-            new ShooterReverse(m_shooter).withTimeout(0.25),
+            new KickerReverse(m_intake).withTimeout(Constants.shooterReverseTime),
+            new ShooterReverse(m_shooter).withTimeout(Constants.shooterReverseTime),
             new LimelightActivate(m_limelight)
           ), 
           new WaitCommand(0.1),
           new ParallelRaceGroup( 
             new SetShooterRPM(m_shooter, m_limelight, true).withTimeout(3.5), //BRB used SetShooterRPMTest here
             new SequentialCommandGroup(
-              new WaitCommand(0.75),
+              new WaitCommand(Constants.kickItWaitTime),
               new KickerKickIt(m_intake), 
-              new WaitCommand(3.0)
+              new WaitCommand(Constants.shooterAutoTime)
             )
           )
         ),
@@ -60,27 +63,27 @@ public class Auto2BP1 extends SequentialCommandGroup {
         new SequentialCommandGroup(
           new ParallelRaceGroup(
             new AutoIntakeStart(m_intake),
-            new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, -45).withTimeout(2.0)
+            new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, 135).withTimeout(2.0)
           ),
           new AutoIntakeEnd(m_intake),
-          new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, 35).withTimeout(2.0),
+          new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, -135).withTimeout(2.0),
           new LimelightActivate(m_limelight),
           //new OdometryDriveCommand(m_drive, 1.2,0.0, 0.0).withTimeout(0.5),
           new LimeLightDriveCommand(m_drive, ()->0.0, ()->0.0, ()->0.0).withTimeout(1.0)
         ),
         new SequentialCommandGroup(
           new ParallelCommandGroup(
-            new KickerReverse(m_intake).withTimeout(0.25),
-            new ShooterReverse(m_shooter).withTimeout(0.25),
+            new KickerReverse(m_intake).withTimeout(Constants.shooterReverseTime),
+            new ShooterReverse(m_shooter).withTimeout(Constants.shooterReverseTime),
             new LimelightActivate(m_limelight)
           ), 
           new WaitCommand(0.1),
           new ParallelRaceGroup( 
             new SetShooterRPM(m_shooter, m_limelight, true).withTimeout(3.5), //BRB used SetShooterRPMTest here
             new SequentialCommandGroup(
-              new WaitCommand(0.75),
+              new WaitCommand(Constants.kickItWaitTime),
               new KickerKickIt(m_intake), 
-              new WaitCommand(3.0)
+              new WaitCommand(Constants.shooterAutoTime)
             )
           )
         ),
@@ -88,7 +91,8 @@ public class Auto2BP1 extends SequentialCommandGroup {
           new LimelightDeactivate(m_limelight), 
           new ShooterStop(m_shooter), 
           new KickerStop(m_intake), 
-          new IntakeStop(m_intake)
+          new IntakeStop(m_intake),
+          new SetGyroAdjustmentTeleop(m_drive)
         )
       )
     );

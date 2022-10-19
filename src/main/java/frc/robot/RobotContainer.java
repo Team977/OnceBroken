@@ -20,6 +20,12 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Auto1;
+import frc.robot.commands.Auto1BP1;
+import frc.robot.commands.Auto1BP2;
+import frc.robot.commands.Auto1BP3;
+import frc.robot.commands.Auto2BP1;
+import frc.robot.commands.Auto2BP2;
+import frc.robot.commands.Auto3BP1;
 import frc.robot.commands.AutoClimb;
 import frc.robot.commands.AutoIntakeEnd;
 import frc.robot.commands.AutoIntakeStart;
@@ -28,6 +34,7 @@ import frc.robot.commands.ClimberDown;
 import frc.robot.commands.ClimberUp;
 import frc.robot.commands.CloseLunaClaw;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DoNothing;
 import frc.robot.commands.ExtendLunaClaw;
 import frc.robot.commands.IntakeLoad;
 import frc.robot.commands.IntakeReverse;
@@ -41,6 +48,7 @@ import frc.robot.commands.LimelightDeactivate;
 import frc.robot.commands.ManualHoodMove;
 import frc.robot.commands.OdometryDriveCommand;
 import frc.robot.commands.OpenLunaClaw;
+import frc.robot.commands.OpenLunaClawNoAdv;
 import frc.robot.commands.RetractLunaClaw;
 import frc.robot.commands.SetShooterRPM;
 import frc.robot.commands.SetShooterRPMLow;
@@ -49,7 +57,6 @@ import frc.robot.commands.SettleDown;
 import frc.robot.commands.ShooterReverse;
 import frc.robot.commands.ShooterStop;
 import frc.robot.commands.Wait;
-import frc.robot.commands.AutoChooser;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Intake;
@@ -59,7 +66,7 @@ import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
 
-  private static double m_driveSpeedModifier = 0.75;
+  private static double m_driveSpeedModifier = 0.5;
   private static boolean m_jukeMode = false;
 
   private static int m_climbStage = 0;
@@ -76,10 +83,14 @@ public class RobotContainer {
   private final static Joystick m_operator = new Joystick(1);
 
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-  private static final SendableChooser<Double> pos_chooser = new SendableChooser<>();
-  private static final SendableChooser<Double> ball_chooser = new SendableChooser<>();
   private final Command m_auto1 = new Auto1(m_drivetrainSubsystem, m_shooter,m_Limelight,m_intake);
-  private final Command m_autoChooser = new AutoChooser(m_drivetrainSubsystem, m_shooter,m_Limelight,m_intake);
+  private final Command m_Auto1BP1 = new Auto1BP1(m_drivetrainSubsystem, m_shooter,m_Limelight,m_intake);
+  private final Command m_Auto1BP2 = new Auto1BP2(m_drivetrainSubsystem, m_shooter,m_Limelight,m_intake);
+  private final Command m_Auto1BP3 = new Auto1BP3(m_drivetrainSubsystem, m_shooter,m_Limelight,m_intake);
+  private final Command m_Auto2BP1 = new Auto2BP1(m_drivetrainSubsystem, m_shooter,m_Limelight,m_intake);
+  private final Command m_Auto2BP2 = new Auto2BP2(m_drivetrainSubsystem, m_shooter,m_Limelight,m_intake);
+  private final Command m_Auto3BP1 = new Auto3BP1(m_drivetrainSubsystem, m_shooter,m_Limelight,m_intake);
+  
 
   
   //private final BooleanSupplier m_climbActive =  ()->m_operator.getRawButton(8);
@@ -87,21 +98,13 @@ public class RobotContainer {
   public RobotContainer() {
 
     m_chooser.setDefaultOption("Old Auto", m_auto1 );
-    m_chooser.addOption("New Auto", m_autoChooser);
-
+    m_chooser.addOption("1BP1", m_Auto1BP1);
+    m_chooser.addOption("1BP2", m_Auto1BP2);
+    m_chooser.addOption("1BP3", m_Auto1BP3);
+    m_chooser.addOption("2BP1", m_Auto2BP1);
+    m_chooser.addOption("2BP2", m_Auto2BP2);
+    m_chooser.addOption("3BP1", m_Auto3BP1);
     SmartDashboard.putData(m_chooser);
-
-    ball_chooser.setDefaultOption("1 Ball", 1.0 );
-    ball_chooser.addOption("2 Ball", 2.0);
-    ball_chooser.addOption("3 Ball", 3.0);
-
-    SmartDashboard.putData(ball_chooser);
-
-    pos_chooser.setDefaultOption("Position 1", 1.0 );
-    pos_chooser.addOption("Position 2", 2.0);
-    pos_chooser.addOption("Position 3", 3.0);
-
-    SmartDashboard.putData(pos_chooser);
 
    // CameraServer.startAutomaticCapture();
 
@@ -128,6 +131,7 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
+
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -152,7 +156,7 @@ public class RobotContainer {
     //speed mode?
     new Button(m_driver::getLeftBumper)
     .whenPressed(()->setDriveSpeedModifier(1.0))
-    .whenReleased(()->setDriveSpeedModifier(0.75));
+    .whenReleased(()->setDriveSpeedModifier(0.5));
 
 
     //A button for testing?
@@ -172,8 +176,8 @@ public class RobotContainer {
         .whenActive(
           new SequentialCommandGroup(
             new ParallelCommandGroup(
-              new KickerReverse(m_intake).withTimeout(0.25),
-              new ShooterReverse(m_shooter).withTimeout(0.25)
+              new KickerReverse(m_intake).withTimeout(Constants.shooterReverseTime),
+              new ShooterReverse(m_shooter).withTimeout(Constants.shooterReverseTime)
             ),
             new SequentialCommandGroup(
               new LimelightActivate(m_Limelight),
@@ -186,7 +190,7 @@ public class RobotContainer {
                   () -> -modifyAxis(m_driver.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND),
                 new SetShooterRPM(m_shooter, m_Limelight, true), 
                 new SequentialCommandGroup(
-                  new WaitCommand(0.50),
+                  new WaitCommand(Constants.kickItWaitTime),
                   new KickerKickIt(m_intake)
                 )
               )
@@ -212,13 +216,13 @@ public class RobotContainer {
         .whenActive(
           new SequentialCommandGroup(
             new ParallelCommandGroup(
-              new KickerReverse(m_intake).withTimeout(0.25),
-              new ShooterReverse(m_shooter).withTimeout(0.25)
+              new KickerReverse(m_intake).withTimeout(Constants.shooterReverseTime),
+              new ShooterReverse(m_shooter).withTimeout(Constants.shooterReverseTime)
             ),
             new ParallelCommandGroup(
               new SetShooterRPMLow(m_shooter), 
               new SequentialCommandGroup(
-                new WaitCommand(0.5),
+                new WaitCommand(Constants.kickItWaitTime),
                 new KickerKickIt(m_intake)
               )
             )
@@ -243,16 +247,17 @@ public class RobotContainer {
         .whenPressed(
             new SequentialCommandGroup( 
               new ParallelCommandGroup(
-                new KickerReverse(m_intake).withTimeout(0.25),
-                new ShooterReverse(m_shooter).withTimeout(0.25)
+                new KickerReverse(m_intake).withTimeout(Constants.shooterReverseTime),
+                new ShooterReverse(m_shooter).withTimeout(Constants.shooterReverseTime)
               ),
               new ParallelCommandGroup(
-                new SetShooterRPMTest(m_shooter, m_Limelight)),
+                new SetShooterRPMTest(m_shooter, m_Limelight),
                 new SequentialCommandGroup(
-                  new WaitCommand(0.5),
+                  new WaitCommand(Constants.kickItWaitTime),
                   new KickerKickIt(m_intake)
             )
-          )
+              )
+            )
         )
         .whenReleased(
           new SequentialCommandGroup(
@@ -282,23 +287,24 @@ public class RobotContainer {
     //CLIMB SEQUENCE
     //Send climber to top, and open claw 
     new JoystickButton(m_operator, 6)
-    .whenPressed(new ConditionalCommand(new ParallelCommandGroup(new ClimberUp(m_climber, 0.8),new OpenLunaClaw(m_LunaClimb)), new Wait(),()->RobotContainer.getClimbStage()==0));
+    .whenPressed(new ConditionalCommand(new ParallelCommandGroup(new ClimberUp(m_climber, 0.8),new OpenLunaClawNoAdv(m_LunaClimb)), new DoNothing(),()->RobotContainer.getClimbStage()==0));
 
     //AutoClimb, elevator down, grab, angle and extend
-    new JoystickButton(m_operator, 8)
-    .whenPressed(new ConditionalCommand(new AutoClimb(m_climber,m_LunaClimb, m_intake), new Wait(), ()->RobotContainer.getClimbStage()==1));
+    new JoystickButton(m_operator, 5)
+    .whenPressed(new ConditionalCommand(new AutoClimb(m_climber,m_LunaClimb, m_intake), new DoNothing(), ()->RobotContainer.getClimbStage()==1));
 
     //Opens the claw, swings down
-    new JoystickButton(m_operator, 5)
-    .whenPressed(new ConditionalCommand(new OpenLunaClaw(m_LunaClimb), new Wait(), ()->RobotContainer.getClimbStage()==2));
+    new JoystickButton(m_operator, 4)
+    .whenPressed(new ConditionalCommand(new OpenLunaClaw(m_LunaClimb), new DoNothing(), ()->RobotContainer.getClimbStage()==2));
 
     //Once robot is settled, press to enable Autoclimb again
-    new JoystickButton(m_operator, 4)
-    .whenPressed(new ConditionalCommand(new SettleDown(), new Wait(), ()->RobotContainer.getClimbStage()==3));
+    new JoystickButton(m_operator, 7)
+    .whenPressed(new ConditionalCommand(new SettleDown(), new DoNothing(), ()->RobotContainer.getClimbStage()==3));
 
 
     //Manual climb buttons
     //Close claw
+    /*
     new JoystickButton(m_operator, 7)
     .whenPressed(new CloseLunaClaw(m_LunaClimb));
   
@@ -306,7 +312,7 @@ public class RobotContainer {
     new JoystickButton(m_operator, 3)
     .whenPressed(new RetractLunaClaw(m_LunaClimb))
     .whenReleased(new ExtendLunaClaw(m_LunaClimb));
-
+*/
   }
 
   /**
@@ -317,6 +323,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
     return m_chooser.getSelected();
+    
 
   }
 
@@ -383,15 +390,7 @@ public class RobotContainer {
   }
     
   public static double getLowRPM(){
-    return(SmartDashboard.getNumber("LOW RPM", 1500));
-  }
-
-  public static double getPosChoice(){
-    return(pos_chooser.getSelected());
-  }
-  
-  public static double getBallChoice(){
-    return(ball_chooser.getSelected());
+    return(SmartDashboard.getNumber("LOW RPM", 2000));
   }
 
   public static int getClimbStage(){
@@ -403,6 +402,9 @@ public class RobotContainer {
     m_climbStage++;
   }
 
+  public static void setClimbStage(int number){
+    m_climbStage = number;
+  }
   public static void resetClimbStage(){
     m_climbStage = 0;
   }

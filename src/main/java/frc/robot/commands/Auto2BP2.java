@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -24,10 +25,11 @@ public class Auto2BP2 extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new SequentialCommandGroup(
+        new SetOdometryAdjustment(m_drive, Constants.pos2X, Constants.pos2Y, Constants.pos2theta),
         new SequentialCommandGroup(
           new ParallelRaceGroup(
             new AutoIntakeStart(m_intake),
-            new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, 24).withTimeout(2.0)
+            new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, Constants.pos2theta).withTimeout(2.0)
           ),
           new AutoIntakeEnd(m_intake),
           new LimelightActivate(m_limelight),
@@ -36,17 +38,17 @@ public class Auto2BP2 extends SequentialCommandGroup {
         ),
         new SequentialCommandGroup(
           new ParallelCommandGroup(
-            new KickerReverse(m_intake).withTimeout(0.25),
-            new ShooterReverse(m_shooter).withTimeout(0.25),
+            new KickerReverse(m_intake).withTimeout(Constants.shooterReverseTime),
+            new ShooterReverse(m_shooter).withTimeout(Constants.shooterReverseTime),
             new LimelightActivate(m_limelight)
           ), 
           new WaitCommand(0.1),
           new ParallelRaceGroup( 
             new SetShooterRPM(m_shooter, m_limelight, true).withTimeout(3.5), //BRB used SetShooterRPMTest here
             new SequentialCommandGroup(
-              new WaitCommand(0.75),
+              new WaitCommand(Constants.kickItWaitTime),
               new KickerKickIt(m_intake), 
-              new WaitCommand(3.0)
+              new WaitCommand(Constants.shooterAutoTime)
             )
           )
         ),
@@ -60,27 +62,27 @@ public class Auto2BP2 extends SequentialCommandGroup {
         new SequentialCommandGroup(
           new ParallelRaceGroup(
             new AutoIntakeStart(m_intake),
-            new OdometryDriveCommand(m_drive, Constants.ball4Xpos,Constants.ball4Ypos, 10).withTimeout(2.0)
+            new OdometryDriveCommand(m_drive, Constants.ball4Xpos,Constants.ball4Ypos, -170).withTimeout(2.0)
           ),
           new AutoIntakeEnd(m_intake),
-          new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, 35).withTimeout(2.0),
+          new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, -135).withTimeout(2.0),
           new LimelightActivate(m_limelight),
           //new OdometryDriveCommand(m_drive, 1.2,0.0, 0.0).withTimeout(0.5),
           new LimeLightDriveCommand(m_drive, ()->0.0, ()->0.0, ()->0.0).withTimeout(1.0)
         ),
         new SequentialCommandGroup(
           new ParallelCommandGroup(
-            new KickerReverse(m_intake).withTimeout(0.25),
-            new ShooterReverse(m_shooter).withTimeout(0.25),
+            new KickerReverse(m_intake).withTimeout(Constants.shooterReverseTime),
+            new ShooterReverse(m_shooter).withTimeout(Constants.shooterReverseTime),
             new LimelightActivate(m_limelight)
           ), 
           new WaitCommand(0.1),
           new ParallelRaceGroup( 
             new SetShooterRPM(m_shooter, m_limelight, true).withTimeout(3.5), //BRB used SetShooterRPMTest here
             new SequentialCommandGroup(
-              new WaitCommand(0.75),
+              new WaitCommand(Constants.kickItWaitTime),
               new KickerKickIt(m_intake), 
-              new WaitCommand(3.0)
+              new WaitCommand(Constants.shooterAutoTime)
             )
           )
         ),
@@ -88,7 +90,8 @@ public class Auto2BP2 extends SequentialCommandGroup {
           new LimelightDeactivate(m_limelight), 
           new ShooterStop(m_shooter), 
           new KickerStop(m_intake), 
-          new IntakeStop(m_intake)
+          new IntakeStop(m_intake),
+          new SetGyroAdjustmentTeleop(m_drive)
         )
       )
     );

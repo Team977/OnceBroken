@@ -19,7 +19,7 @@ public class KickerKickIt extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.engageKicker(1.0);
+    m_intake.engageKicker(0.75);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

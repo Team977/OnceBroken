@@ -51,26 +51,30 @@ public final class Constants {
     public static final double kHoodMinValue = 0.15;
     public static final double kHoodMaxValue = 0.47;
 
-    public static final double rotationModifier = 0.8;
+    public static final double rotationModifier = 0.5;
 
-    public static final double ball1Xpos = 0.658;
-    public static final double ball1Ypos = 3.83;
-    public static final double ball2Xpos = 3.174;
-    public static final double ball2Ypos = 2.243;
-    public static final double ball3Xpos = 3.287;
-    public static final double ball3Ypos = -2.074;
-    public static final double ball4Xpos = 7.165;
-    public static final double ball4Ypos = 2.99;
+    public static final double ball1Xpos = -0.658;
+    public static final double ball1Ypos = -3.83;
+    public static final double ball2Xpos = -3.174;
+    public static final double ball2Ypos = -2.243;
+    public static final double ball3Xpos = -3.287;
+    public static final double ball3Ypos = 2.074;
+    public static final double ball4Xpos = -7.165;
+    public static final double ball4Ypos = -2.99;
 
-    public static final double pos1X = 0.686;
-    public static final double pos1Y = 2.753;
+    public static final double pos1X = -0.686;
+    public static final double pos1Y = -2.753;
     public static final double pos1theta = -88.5;
 
-    public static final double pos2X = 1.959;
-    public static final double pos2Y = 1.702;
-    public static final double pos2theta = -24;
+    public static final double pos2X = -1.959;
+    public static final double pos2Y = -1.702;
+    public static final double pos2theta = -156;
 
-    public static final double pos3X = 2.505;
-    public static final double pos3Y = -1.332;
-    public static final double pos3theta = 44.0;
+    public static final double pos3X = -2.505;
+    public static final double pos3Y = 1.332;
+    public static final double pos3theta = 136;
+
+    public static final double kickItWaitTime = 1.2;
+    public static final double shooterReverseTime = 0.25;
+    public static final double shooterAutoTime = 1.0;
 }

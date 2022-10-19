@@ -5,19 +5,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 
-public class SettleDown extends CommandBase {
-  /** Creates a new SettleDown. */
-  public SettleDown() {
+public class DoNothing extends CommandBase {
+  /** Creates a new Wait. */
+  public DoNothing() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    RobotContainer.setClimbStage(1);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

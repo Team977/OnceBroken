@@ -5,23 +5,28 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.LunaClimb;
 
-public class SettleDown extends CommandBase {
-  /** Creates a new SettleDown. */
-  public SettleDown() {
+public class OpenLunaClawNoAdv extends CommandBase {
+
+  private LunaClimb m_LunaClimb;
+  /** Creates a new OpenLunaClaw. */
+  public OpenLunaClawNoAdv(LunaClimb subsystem) {
+    m_LunaClimb = subsystem;
+    addRequirements(m_LunaClimb);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.setClimbStage(1);
+    m_LunaClimb.openLunaClaw();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   // Called once the command ends or is interrupted.
   @Override

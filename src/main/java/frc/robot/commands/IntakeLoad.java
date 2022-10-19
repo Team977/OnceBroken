@@ -24,7 +24,7 @@ public class IntakeLoad extends CommandBase {
   @Override
   public void execute() {
     m_subsystem.RunIntake();
-    m_subsystem.engageKicker(0.8);
+    m_subsystem.engageKicker(0.4);
   }
 
   // Called once the command ends or is interrupted.
