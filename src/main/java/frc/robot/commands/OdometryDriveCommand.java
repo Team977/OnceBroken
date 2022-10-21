@@ -35,9 +35,14 @@ public class OdometryDriveCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    xController = new PIDController(2.5, 0.05, 0);
-    yController = new PIDController(2.5, 0.05, 0);
-    rController = new PIDController(0.1, 0.001, 0);
+    xController = new PIDController(1.8, 0.05, 0);
+    yController = new PIDController(1.8, 0.05, 0);
+    rController = new PIDController(0.05, 0.001, 0);
+
+    
+    xController.setTolerance(0.05);
+    yController.setTolerance(0.05);
+    rController.setTolerance(.2);
     
   }
 
@@ -48,8 +53,36 @@ public class OdometryDriveCommand extends CommandBase {
 
     x_move = xController.calculate(m_drivetrainSubsystem.getOdometryX(), m_X);
     y_move = yController.calculate(m_drivetrainSubsystem.getOdometryY(), m_Y);
+
+    //new idea: calculate, and then modify that value if it is abs>180
+
     rot_move = rController.calculate(m_drivetrainSubsystem.getGyroscopeRotation().getDegrees(), m_rotationPose);
 
+    if (rot_move<-180){
+      rot_move = rot_move+360;
+    }
+    if (rot_move>180){
+      rot_move = rot_move-360;
+    }
+
+
+    //need to do two calculates here: one for + and one for -?
+    //OR: compare gyro degrees & rotationpose and decide which to modify before calculating
+/*
+    double currentAngle = m_drivetrainSubsystem.getGyroscopeRotation().getDegrees();
+    if (Math.abs(currentAngle - m_rotationPose)>180){
+      if(m_rotationPose>0){
+        rot_move = rController.calculate(m_drivetrainSubsystem.getGyroscopeRotation().getDegrees(), 360+m_rotationPose);
+      }else{
+        rot_move = rController.calculate(m_drivetrainSubsystem.getGyroscopeRotation().getDegrees(), 360-m_rotationPose);
+      }
+    }else{
+      
+    rot_move = rController.calculate(m_drivetrainSubsystem.getGyroscopeRotation().getDegrees(), m_rotationPose);
+    }
+
+    //rot_move = rController.calculate(m_drivetrainSubsystem.getGyroscopeRotation().getDegrees(), m_rotationPose);
+*/
 
     m_drivetrainSubsystem.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -59,9 +92,14 @@ public class OdometryDriveCommand extends CommandBase {
                         m_drivetrainSubsystem.getGyroscopeRotation()
                 ));
 
-    //SmartDashboard.putNumber("X Odo Error", xController.getPositionError());
-    //SmartDashboard.putNumber("Y Odo Error", yController.getPositionError());
-    //SmartDashboard.putNumber("R Odo Error", rController.getPositionError());
+    SmartDashboard.putNumber("X Odo Error", xController.getPositionError());
+    SmartDashboard.putNumber("Y Odo Error", yController.getPositionError());
+    SmartDashboard.putNumber("R Odo Error", rController.getPositionError());
+
+    SmartDashboard.putNumber("X Move", x_move);
+    SmartDashboard.putNumber("Y Move", y_move);
+    SmartDashboard.putNumber("R Move", rot_move);
+  
   }
 
   // Called once the command ends or is interrupted.
@@ -73,6 +111,7 @@ public class OdometryDriveCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(xController.getPositionError())<0.1 && Math.abs(yController.getPositionError())<0.1 && Math.abs(rController.getPositionError())<2;
+    return xController.atSetpoint() && yController.atSetpoint() && rController.atSetpoint();
+    //return Math.abs(xController.getPositionError())<0.1 && Math.abs(yController.getPositionError())<0.1 && Math.abs(rController.getPositionError())<2;
   }
 }

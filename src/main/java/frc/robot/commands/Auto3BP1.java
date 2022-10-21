@@ -60,16 +60,18 @@ public class Auto3BP1 extends SequentialCommandGroup {
         ),
 
         new SequentialCommandGroup(
+          new OdometryDriveCommand(m_drive, Constants.approach2X,Constants.approach2Y, Constants.approach2theta).withTimeout(2.0),
           new ParallelRaceGroup(
             new AutoIntakeStart(m_intake),
-            new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, 135).withTimeout(2.0)
+            new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, Constants.approach2theta).withTimeout(2.0)
           ),
+          new OdometryDriveCommand(m_drive, Constants.approach4X,Constants.approach4Y, Constants.approach4theta).withTimeout(3.0),
           new ParallelRaceGroup(
             new AutoIntakeStart(m_intake),
-            new OdometryDriveCommand(m_drive, Constants.ball4Xpos,Constants.ball4Ypos, -170).withTimeout(3.0)
+            new OdometryDriveCommand(m_drive, Constants.ball4Xpos,Constants.ball4Ypos, Constants.approach4theta).withTimeout(2.0)
           ),
           new AutoIntakeEnd(m_intake),
-          new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, -135).withTimeout(2.0),
+          new OdometryDriveCommand(m_drive, Constants.return2X,Constants.return2Y, Constants.return2theta).withTimeout(2.0),
           new LimelightActivate(m_limelight),
           //new OdometryDriveCommand(m_drive, 1.2,0.0, 0.0).withTimeout(0.5),
           new LimeLightDriveCommand(m_drive, ()->0.0, ()->0.0, ()->0.0).withTimeout(1.0)
@@ -94,8 +96,8 @@ public class Auto3BP1 extends SequentialCommandGroup {
           new LimelightDeactivate(m_limelight), 
           new ShooterStop(m_shooter), 
           new KickerStop(m_intake), 
-          new IntakeStop(m_intake),
-          new SetGyroAdjustmentTeleop(m_drive)
+          new IntakeStop(m_intake)
+          //new SetGyroAdjustmentTeleop(m_drive,Constants.pos1theta)
         )
       )
     );

@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter;
 
@@ -28,6 +29,7 @@ public class SetShooterRPMLow extends CommandBase {
 
     //m_Shooter.setRPM(RobotContainer.getRPM());
     m_Shooter.setRPM(RobotContainer.getLowRPM());
+    m_Shooter.setHoodPosition(Constants.lowHoodPosition);
 
   }
 

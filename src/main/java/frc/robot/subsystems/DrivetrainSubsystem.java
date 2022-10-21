@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
 import static frc.robot.Constants.*;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -32,7 +34,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * <p>
    * This can be reduced to cap the robot's maximum speed. Typically, this is useful during initial testing of the robot.
    */
-  public static final double MAX_VOLTAGE = 10.0;//BRB 6.0;//12
+  public static final double MAX_VOLTAGE = Constants.maxDriveVoltage;//BRB 6.0;//12
   //  The formula for calculating the theoretical maximum velocity is:
   //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
   //  By default this value is setup for a Mk3 standard module using Falcon500s to drive.
@@ -185,8 +187,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public Rotation2d getGyroscopeRotation() {
 
-        return Rotation2d.fromDegrees(-m_navx.getYaw());
-/*
+        //return Rotation2d.fromDegrees(-m_navx.getYaw());
+        
+        double tempAngle = -m_navx.getYaw()+DrivetrainSubsystem.gyro_angle_adjust;
+        if (tempAngle < -180) tempAngle = tempAngle+360;
+        if (tempAngle > 180) tempAngle = tempAngle-360;
+
+        //return Rotation2d.fromDegrees(-m_navx.getYaw()+DrivetrainSubsystem.gyro_angle_adjust);
+        
+        return Rotation2d.fromDegrees(tempAngle);
+        
+        /*
     if (m_navx.isMagnetometerCalibrated()) {
      // We will only get valid fused headings if the magnetometer is calibrated
         //return Rotation2d.fromDegrees(m_navx.getFusedHeading());
@@ -209,7 +220,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
      */
   }
+  public Rotation2d getGyroscopeRotationManual() {
 
+        return Rotation2d.fromDegrees(-m_navx.getYaw());
+
+  }
   public void setGyroStart(double angle){
         DrivetrainSubsystem.gyro_angle_adjust = angle; //was negative
   }
@@ -231,7 +246,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   /** Updates the field relative position of the robot. */
   public void updateOdometry() {
         m_odometry.update(
-            getGyroscopeRotation(),
+            getGyroscopeRotationManual(),
             m_frontLeftModule.getOdoState(),
             m_frontRightModule.getOdoState(),
             m_backLeftModule.getOdoState(),
@@ -248,6 +263,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         public void setOdometryOffset(double x, double y, double angle){
                 m_odometry.resetPosition(new Pose2d(x,y, Rotation2d.fromDegrees(angle)), getGyroscopeRotation());
+                //m_odometry.resetPosition(new Pose2d(x,y, Rotation2d.fromDegrees(angle)), getGyroscopeRotation());
+                
         }
 
 
@@ -295,6 +312,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     //SmartDashboard.putNumber("Gyro Radians", getGyroscopeRotation().getRadians());
     SmartDashboard.putNumber("odometry X", m_odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("odometry Y", m_odometry.getPoseMeters().getY());
+SmartDashboard.putNumber("Gyro Offset", gyro_angle_adjust);
 
     //SmartDashboard.putString("Juke Location", m_rotationCenter.toString());
 

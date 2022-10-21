@@ -59,6 +59,7 @@ public class DefaultDriveCommand extends CommandBase {
                         y,
                         rot,
                         m_drivetrainSubsystem.getGyroscopeRotation()
+                        //m_drivetrainSubsystem.getGyroscopeRotationManual()
                 )
         );
 

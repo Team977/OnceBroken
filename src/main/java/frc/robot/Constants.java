@@ -51,6 +51,8 @@ public final class Constants {
     public static final double kHoodMinValue = 0.15;
     public static final double kHoodMaxValue = 0.47;
 
+    public static final double lowHoodPosition = 0.4;
+
     public static final double rotationModifier = 0.5;
 
     public static final double ball1Xpos = -0.658;
@@ -61,6 +63,18 @@ public final class Constants {
     public static final double ball3Ypos = 2.074;
     public static final double ball4Xpos = -7.165;
     public static final double ball4Ypos = -2.99;
+
+    public static final double approach2X = -2.586;
+    public static final double approach2Y = -2.613;
+    public static final double approach2theta = 147.75;
+    
+    public static final double approach4X = -6.371;
+    public static final double approach4Y = -2.842;
+    public static final double approach4theta = -169.4;
+    
+    public static final double return2X = -3.174;
+    public static final double return2Y = -2.243;
+    public static final double return2theta = -145;
 
     public static final double pos1X = -0.686;
     public static final double pos1Y = -2.753;
@@ -75,6 +89,11 @@ public final class Constants {
     public static final double pos3theta = 136;
 
     public static final double kickItWaitTime = 1.2;
-    public static final double shooterReverseTime = 0.25;
+    public static final double shooterReverseTime = 0.20;
     public static final double shooterAutoTime = 1.0;
+
+    public static final double nominalVoltage = 12.0;
+    public static final double maxDriveVoltage = 10.0;
+    public static final double maxDriveCurrent = 40.0;
+    public static final double maxSteerCurrent = 20.0;
 }

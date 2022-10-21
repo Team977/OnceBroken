@@ -27,16 +27,17 @@ public class AutoTest2BP1 extends SequentialCommandGroup {
     addCommands(
       new SequentialCommandGroup(
         new SetOdometryAdjustment(m_drive, Constants.pos1X, Constants.pos1Y, Constants.pos1theta),
-        new SequentialCommandGroup(
         
-            new OdometryDriveCommand(m_drive, Constants.ball1Xpos,Constants.ball1Ypos, Constants.pos1theta).withTimeout(5.0),
+            new OdometryDriveCommand(m_drive, Constants.ball1Xpos,Constants.ball1Ypos, Constants.pos1theta).withTimeout(2.0),
           
-            new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, 135).withTimeout(5.0),
+            new OdometryDriveCommand(m_drive, Constants.approach2X,Constants.approach2Y, Constants.approach2theta).withTimeout(2.0),
          
-          new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, -135).withTimeout(5.0)
+          new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, Constants.approach2theta).withTimeout(2.0),
+
+          new OdometryDriveCommand(m_drive, Constants.return2X,Constants.return2Y, Constants.return2theta).withTimeout(2.0)
           
         )
-      )
+      
     );
   }
 }

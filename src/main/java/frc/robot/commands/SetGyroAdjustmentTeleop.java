@@ -11,22 +11,20 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 public class SetGyroAdjustmentTeleop extends CommandBase {
 
   private DrivetrainSubsystem m_drive;
+  private double m_angle;
   /** Creates a new SetGyroAdjustment. */
-  public SetGyroAdjustmentTeleop(DrivetrainSubsystem subsystem) {
+  public SetGyroAdjustmentTeleop(DrivetrainSubsystem subsystem, double angle) {
       m_drive = subsystem;
+      m_angle = angle;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double temp = m_drive.getGyroscopeRotation().getDegrees();
-    if (temp>0){
-      m_drive.setGyroStart(temp -180.0);
-    } else{
-      m_drive.setGyroStart(temp + 180.0);
+m_drive.setGyroStart(m_angle);
     }
-  }
+  
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

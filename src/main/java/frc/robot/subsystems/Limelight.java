@@ -39,7 +39,7 @@ public class Limelight extends SubsystemBase {
       //return (-83.3*(getDistance()-20.5)+1283.3);
       //return (-87*getDistance()+2872);
       //return (-42*getDistance()+2750);
-      return (-40*getDistance()+2720);
+      return (-40*getDistance()+2770);
   }
   
   public double getLowRPM(){

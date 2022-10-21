@@ -29,7 +29,7 @@ public class Auto1BP2 extends SequentialCommandGroup {
         new SequentialCommandGroup(
           new ParallelRaceGroup(
             new AutoIntakeStart(m_intake),
-            new ProfiledOdometryDrive(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, Constants.pos2theta).withTimeout(2.0)
+            new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, Constants.pos2theta).withTimeout(2.0)
           ),
           new AutoIntakeEnd(m_intake),
           new LimelightActivate(m_limelight),
@@ -56,8 +56,8 @@ public class Auto1BP2 extends SequentialCommandGroup {
           new LimelightDeactivate(m_limelight), 
           new ShooterStop(m_shooter), 
           new KickerStop(m_intake), 
-          new IntakeStop(m_intake),
-          new SetGyroAdjustmentTeleop(m_drive)
+          new IntakeStop(m_intake)
+          //new SetGyroAdjustmentTeleop(m_drive,Constants.pos2theta)
         )
       )
     );

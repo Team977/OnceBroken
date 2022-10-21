@@ -25,7 +25,7 @@ public class ProfiledOdometryDrive extends CommandBase {
   private ProfiledPIDController yController;
   private ProfiledPIDController rController;
 
-  private Constraints m_Constraints = new TrapezoidProfile.Constraints(0.25, 0.25);
+  private Constraints m_Constraints = new TrapezoidProfile.Constraints(0.0025, 0.0025);
   /** Creates a new OdometryDriveCommand. */
   public ProfiledOdometryDrive(DrivetrainSubsystem subsystem, double x, double y, double rot) {
     m_drivetrainSubsystem = subsystem;
@@ -39,9 +39,9 @@ public class ProfiledOdometryDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    xController = new ProfiledPIDController(2.5, 0.05, 0, m_Constraints);
-    yController = new ProfiledPIDController(2.5, 0.05, 0, m_Constraints);
-    rController = new ProfiledPIDController(.150, 0.001, 0, m_Constraints);
+    xController = new ProfiledPIDController(.25, 0.05, 0, m_Constraints);
+    yController = new ProfiledPIDController(.25, 0.05, 0, m_Constraints);
+    rController = new ProfiledPIDController(.0150, 0.001, 0, m_Constraints);
 
     
     xController.setTolerance(0.1);

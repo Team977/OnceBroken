@@ -2,6 +2,8 @@ package com.swervedrivespecialties.swervelib;
 
 import java.util.Objects;
 
+import frc.robot.Constants;
+
 /**
  * Additional Mk4 module configuration parameters.
  * <p>
@@ -9,9 +11,9 @@ import java.util.Objects;
  * Each setting is initialized to a default that should be adequate for most use cases.
  */
 public class Mk4ModuleConfiguration {
-    private double nominalVoltage = 12.0;
-    private double driveCurrentLimit = 80.0;
-    private double steerCurrentLimit = 20.0;
+    private double nominalVoltage = Constants.nominalVoltage;
+    private double driveCurrentLimit = Constants.maxDriveCurrent;
+    private double steerCurrentLimit = Constants.maxSteerCurrent;
 
     public double getNominalVoltage() {
         return nominalVoltage;
