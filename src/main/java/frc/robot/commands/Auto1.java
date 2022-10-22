@@ -44,7 +44,8 @@ public class Auto1 extends SequentialCommandGroup {
           ), 
           new WaitCommand(0.1),
           new ParallelRaceGroup( 
-            new SetShooterRPM(m_shooter, m_limelight, true).withTimeout(3.5), //BRB used SetShooterRPMTest here
+            new SetShooterRPMAuto(m_shooter).withTimeout(3.5), 
+            //new SetShooterRPM(m_shooter, m_limelight, true).withTimeout(3.5),//BRB used SetShooterRPMTest here
             new SequentialCommandGroup(
               new WaitCommand(Constants.kickItWaitTime),
               new KickerKickIt(m_intake), 

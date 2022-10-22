@@ -29,7 +29,7 @@ public class Auto1BP3 extends SequentialCommandGroup {
         new SequentialCommandGroup(
           new ParallelRaceGroup(
             new AutoIntakeStart(m_intake),
-            new OdometryDriveCommand(m_drive, Constants.ball3Xpos,Constants.ball3Ypos, Constants.pos3theta).withTimeout(2.0)
+            new OdometryDriveCommand(m_drive, Constants.ball3Xpos,Constants.ball3Ypos, Constants.pos3theta).withTimeout(Constants.AutoMoveTimeout)
           ),
           new AutoIntakeEnd(m_intake),
           new LimelightActivate(m_limelight),
@@ -44,7 +44,7 @@ public class Auto1BP3 extends SequentialCommandGroup {
           ), 
           new WaitCommand(0.1),
           new ParallelRaceGroup( 
-            new SetShooterRPM(m_shooter, m_limelight, true).withTimeout(3.5), //BRB used SetShooterRPMTest here
+            new SetShooterRPMAuto(m_shooter).withTimeout(3.0), //BRB used SetShooterRPMTest here
             new SequentialCommandGroup(
               new WaitCommand(Constants.kickItWaitTime),
               new KickerKickIt(m_intake), 

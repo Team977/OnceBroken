@@ -51,6 +51,10 @@ public final class Constants {
     public static final double kHoodMinValue = 0.15;
     public static final double kHoodMaxValue = 0.47;
 
+
+    public static final double AutoShooterRPM = 3000;
+    public static final double AutoHoodPosition = 0.42;
+
     public static final double lowHoodPosition = 0.4;
 
     public static final double rotationModifier = 0.5;
@@ -90,7 +94,8 @@ public final class Constants {
 
     public static final double kickItWaitTime = 1.2;
     public static final double shooterReverseTime = 0.20;
-    public static final double shooterAutoTime = 1.0;
+    public static final double shooterAutoTime = 2.0;
+    public static final double AutoMoveTimeout = 3.0;
 
     public static final double nominalVoltage = 12.0;
     public static final double maxDriveVoltage = 10.0;

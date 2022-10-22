@@ -39,7 +39,10 @@ public class Limelight extends SubsystemBase {
       //return (-83.3*(getDistance()-20.5)+1283.3);
       //return (-87*getDistance()+2872);
       //return (-42*getDistance()+2750);
-      return (-40*getDistance()+2770);
+
+      double tempRPM = -40*getDistance()+2770;
+      if (tempRPM<2900) {tempRPM=2900;}
+      return (tempRPM);
   }
   
   public double getLowRPM(){
@@ -50,7 +53,11 @@ public class Limelight extends SubsystemBase {
 
   public double getHighHoodPosition(){
    
-    return (0.0065*getDistance()+.48);
+    double tempHood = 0.0065*getDistance()+.48;
+    if (tempHood > .47) {tempHood = 0.47;}
+    if (tempHood < .35) {tempHood = 0.35;}
+
+    return (tempHood);
    //return 0.27;
     //return -.72*getDistance()+.953;
    //return -getDistance()+80;

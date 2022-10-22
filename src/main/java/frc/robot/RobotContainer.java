@@ -91,7 +91,7 @@ public class RobotContainer {
   private final Command m_Auto2BP1 = new Auto2BP1(m_drivetrainSubsystem, m_shooter,m_Limelight,m_intake);
   private final Command m_Auto2BP2 = new Auto2BP2(m_drivetrainSubsystem, m_shooter,m_Limelight,m_intake);
   private final Command m_Auto3BP1 = new Auto3BP1(m_drivetrainSubsystem, m_shooter,m_Limelight,m_intake);
-  private final Command m_AutoTest2BP1 = new AutoTest2BP1(m_drivetrainSubsystem, m_shooter,m_Limelight,m_intake);
+  //private final Command m_AutoTest2BP1 = new AutoTest2BP1(m_drivetrainSubsystem, m_shooter,m_Limelight,m_intake);
   
 
   
@@ -106,7 +106,7 @@ public class RobotContainer {
     m_chooser.addOption("2BP1", m_Auto2BP1);
     m_chooser.addOption("2BP2", m_Auto2BP2);
     m_chooser.addOption("3BP1", m_Auto3BP1);
-    m_chooser.addOption("Test 2bp1", m_AutoTest2BP1);
+    //m_chooser.addOption("Test 2bp1", m_AutoTest2BP1);
     SmartDashboard.putData(m_chooser);
 
    // CameraServer.startAutomaticCapture();

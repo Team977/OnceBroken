@@ -29,7 +29,7 @@ public class Auto3BP1 extends SequentialCommandGroup {
         new SequentialCommandGroup(
           new ParallelRaceGroup(
             new AutoIntakeStart(m_intake),
-            new OdometryDriveCommand(m_drive, Constants.ball1Xpos,Constants.ball1Ypos, Constants.pos1theta).withTimeout(2.0)
+            new OdometryDriveCommand(m_drive, Constants.ball1Xpos,Constants.ball1Ypos, Constants.pos1theta).withTimeout(Constants.AutoMoveTimeout)
           ),
           new AutoIntakeEnd(m_intake),
           new LimelightActivate(m_limelight),
@@ -44,7 +44,7 @@ public class Auto3BP1 extends SequentialCommandGroup {
           ), 
           new WaitCommand(0.1),
           new ParallelRaceGroup( 
-            new SetShooterRPM(m_shooter, m_limelight, true).withTimeout(3.5), //BRB used SetShooterRPMTest here
+            new SetShooterRPMAuto(m_shooter).withTimeout(3.0), //BRB used SetShooterRPMTest here
             new SequentialCommandGroup(
               new WaitCommand(Constants.kickItWaitTime),
               new KickerKickIt(m_intake), 
@@ -60,18 +60,18 @@ public class Auto3BP1 extends SequentialCommandGroup {
         ),
 
         new SequentialCommandGroup(
-          new OdometryDriveCommand(m_drive, Constants.approach2X,Constants.approach2Y, Constants.approach2theta).withTimeout(2.0),
+          new OdometryDriveCommand(m_drive, Constants.approach2X,Constants.approach2Y, Constants.approach2theta).withTimeout(Constants.AutoMoveTimeout),
           new ParallelRaceGroup(
             new AutoIntakeStart(m_intake),
-            new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, Constants.approach2theta).withTimeout(2.0)
+            new OdometryDriveCommand(m_drive, Constants.ball2Xpos,Constants.ball2Ypos, Constants.approach2theta).withTimeout(Constants.AutoMoveTimeout)
           ),
-          new OdometryDriveCommand(m_drive, Constants.approach4X,Constants.approach4Y, Constants.approach4theta).withTimeout(3.0),
+          new OdometryDriveCommand(m_drive, Constants.approach4X,Constants.approach4Y, Constants.approach4theta).withTimeout(Constants.AutoMoveTimeout),
           new ParallelRaceGroup(
             new AutoIntakeStart(m_intake),
-            new OdometryDriveCommand(m_drive, Constants.ball4Xpos,Constants.ball4Ypos, Constants.approach4theta).withTimeout(2.0)
+            new OdometryDriveCommand(m_drive, Constants.ball4Xpos,Constants.ball4Ypos, Constants.approach4theta).withTimeout(Constants.AutoMoveTimeout)
           ),
           new AutoIntakeEnd(m_intake),
-          new OdometryDriveCommand(m_drive, Constants.return2X,Constants.return2Y, Constants.return2theta).withTimeout(2.0),
+          new OdometryDriveCommand(m_drive, Constants.return2X,Constants.return2Y, Constants.return2theta).withTimeout(Constants.AutoMoveTimeout),
           new LimelightActivate(m_limelight),
           //new OdometryDriveCommand(m_drive, 1.2,0.0, 0.0).withTimeout(0.5),
           new LimeLightDriveCommand(m_drive, ()->0.0, ()->0.0, ()->0.0).withTimeout(1.0)
@@ -84,7 +84,7 @@ public class Auto3BP1 extends SequentialCommandGroup {
           ), 
           new WaitCommand(0.1),
           new ParallelRaceGroup( 
-            new SetShooterRPM(m_shooter, m_limelight, true).withTimeout(3.5), //BRB used SetShooterRPMTest here
+            new SetShooterRPMAuto(m_shooter).withTimeout(3.0), //BRB used SetShooterRPMTest here
             new SequentialCommandGroup(
               new WaitCommand(Constants.kickItWaitTime),
               new KickerKickIt(m_intake), 

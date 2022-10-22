@@ -35,8 +35,8 @@ public class OdometryDriveCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    xController = new PIDController(1.8, 0.05, 0);
-    yController = new PIDController(1.8, 0.05, 0);
+    xController = new PIDController(2.0, 0.05, 0);
+    yController = new PIDController(2.0, 0.05, 0);
     rController = new PIDController(0.05, 0.001, 0);
 
     
