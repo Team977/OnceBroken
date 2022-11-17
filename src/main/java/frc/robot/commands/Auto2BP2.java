@@ -33,7 +33,6 @@ public class Auto2BP2 extends SequentialCommandGroup {
           ),
           new AutoIntakeEnd(m_intake),
           new LimelightActivate(m_limelight),
-          //new OdometryDriveCommand(m_drive, 1.2,0.0, 0.0).withTimeout(0.5),
           new LimeLightDriveCommand(m_drive, ()->0.0, ()->0.0, ()->0.0).withTimeout(1.0)
         ),
         new SequentialCommandGroup(
@@ -65,10 +64,10 @@ public class Auto2BP2 extends SequentialCommandGroup {
             new AutoIntakeStart(m_intake),
             new OdometryDriveCommand(m_drive, Constants.ball4Xpos,Constants.ball4Ypos, Constants.approach4theta).withTimeout(Constants.AutoMoveTimeout)
           ),
+          new WaitCommand(Constants.AutoLoadingWaitTime),
           new AutoIntakeEnd(m_intake),
           new OdometryDriveCommand(m_drive, Constants.return2X,Constants.return2Y, Constants.return2theta).withTimeout(Constants.AutoMoveTimeout),
           new LimelightActivate(m_limelight),
-          //new OdometryDriveCommand(m_drive, 1.2,0.0, 0.0).withTimeout(0.5),
           new LimeLightDriveCommand(m_drive, ()->0.0, ()->0.0, ()->0.0).withTimeout(1.0)
         ),
         new SequentialCommandGroup(

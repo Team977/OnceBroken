@@ -51,6 +51,7 @@ import frc.robot.commands.OdometryDriveCommand;
 import frc.robot.commands.OpenLunaClaw;
 import frc.robot.commands.OpenLunaClawNoAdv;
 import frc.robot.commands.RetractLunaClaw;
+import frc.robot.commands.RetryAutoclimb;
 import frc.robot.commands.SetShooterRPM;
 import frc.robot.commands.SetShooterRPMLow;
 import frc.robot.commands.SetShooterRPMTest;
@@ -72,7 +73,7 @@ public class RobotContainer {
 
   private static int m_climbStage = 0;
 
-  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final static DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final Climber m_climber = new Climber();
   private final Intake m_intake = new Intake();
   public static final Limelight m_Limelight = new Limelight();
@@ -167,11 +168,11 @@ public class RobotContainer {
 
     //Manual Move hood up/down
     new Button(m_driver::getBButton)
-    .whenPressed(new ManualHoodMove(m_shooter, 0.35))
+    .whenPressed(new ManualHoodMove(m_shooter, 0.5))
     .whenReleased(new ManualHoodMove(m_shooter, 0.0));
 
     new Button(m_driver::getYButton)
-    .whenPressed(new ManualHoodMove(m_shooter, -0.35))
+    .whenPressed(new ManualHoodMove(m_shooter, -0.5))
     .whenReleased(new ManualHoodMove(m_shooter, 0.0));
 
     //High goal shot
@@ -294,7 +295,11 @@ public class RobotContainer {
 
     //AutoClimb, elevator down, grab, angle and extend
     new JoystickButton(m_operator, 5)
-    .whenPressed(new ConditionalCommand(new AutoClimb(m_climber,m_LunaClimb, m_intake), new DoNothing(), ()->RobotContainer.getClimbStage()==1));
+    .whenPressed(new ConditionalCommand(new AutoClimb(m_climber,m_LunaClimb, m_intake, m_drivetrainSubsystem), new DoNothing(), ()->RobotContainer.getClimbStage()==1));
+
+    //Retrys to hook, if autoclimb fails to
+    new JoystickButton(m_operator, 3)
+    .whenPressed(new ConditionalCommand(new RetryAutoclimb(m_climber,m_LunaClimb, m_intake), new DoNothing(), ()->RobotContainer.getClimbStage()==2));
 
     //Opens the claw, swings down
     new JoystickButton(m_operator, 4)
@@ -310,12 +315,13 @@ public class RobotContainer {
     /*
     new JoystickButton(m_operator, 7)
     .whenPressed(new CloseLunaClaw(m_LunaClimb));
-  
+  */
+  /*
     //Angle the claw
-    new JoystickButton(m_operator, 3)
+    new JoystickButton(m_operator, 8)
     .whenPressed(new RetractLunaClaw(m_LunaClimb))
     .whenReleased(new ExtendLunaClaw(m_LunaClimb));
-*/
+    */
   }
 
   /**
@@ -370,6 +376,10 @@ public class RobotContainer {
     value = Math.copySign(value * value, value);
 
     return value;
+  }
+
+  public static void publishOdometry(){
+    m_drivetrainSubsystem.updateOdometry();
   }
 
   public static double getDriveSpeedModifier(){

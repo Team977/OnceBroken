@@ -32,6 +32,7 @@ public class Auto1BP1 extends SequentialCommandGroup {
             new OdometryDriveCommand(m_drive, Constants.ball1Xpos,Constants.ball1Ypos, Constants.pos1theta).withTimeout(Constants.AutoMoveTimeout)
           ),
           new AutoIntakeEnd(m_intake),
+          new OdometryDriveCommand(m_drive, Constants.ball1Xpos,Constants.ball1Ypos+0.1, Constants.pos1theta).withTimeout(1.0),
           new LimelightActivate(m_limelight),
           //new OdometryDriveCommand(m_drive, 1.2,0.0, 0.0).withTimeout(0.5),
           new LimeLightDriveCommand(m_drive, ()->0.0, ()->0.0, ()->0.0).withTimeout(1.0)

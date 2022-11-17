@@ -62,8 +62,8 @@ public class Climber extends SubsystemBase {
     m_SolLeftMotor.set(0.0);
     m_SolLeftMotor.getEncoder().setPosition(0.0);
     } else {
-      if (m_SolLeftMotor.getEncoder().getPosition()<40){
-        m_SolLeftMotor.set(speed/4);
+      if (m_SolLeftMotor.getEncoder().getPosition()<20){
+        m_SolLeftMotor.set(speed/3);
       } else {
         m_SolLeftMotor.set(speed);
       }
@@ -73,9 +73,9 @@ public class Climber extends SubsystemBase {
       m_SolRightMotor.set(0.0);
       m_SolRightMotor.getEncoder().setPosition(0.0);
       } else {      
-        if (m_SolLeftMotor.getEncoder().getPosition()<40){
+        if (m_SolRightMotor.getEncoder().getPosition()<20){
        
-        m_SolRightMotor.set(speed/4);
+        m_SolRightMotor.set(speed/3);
       } else {
         m_SolRightMotor.set(speed);
       }
@@ -90,6 +90,44 @@ public class Climber extends SubsystemBase {
 
   public boolean atTop(){
     return (m_SolLeftMotor.getEncoder().getPosition()>=168 && m_SolRightMotor.getEncoder().getPosition()>=178);
+  }
+
+  public void ClimberDownToPosition(double percentHeight){
+    if (m_SolRightMotor.getEncoder().getPosition()>percentHeight*m_SolRightMotor.getSoftLimit(SoftLimitDirection.kForward)){
+        m_SolRightMotor.set(-1.0);
+    }
+    if (m_SolLeftMotor.getEncoder().getPosition()>percentHeight*m_SolLeftMotor.getSoftLimit(SoftLimitDirection.kForward)){
+      m_SolLeftMotor.set(-1.0);
+  }
+}
+
+
+public boolean ClimberDownAtPosition(double percentHeight){
+  if (m_SolLeftMotor.getEncoder().getPosition()>percentHeight*m_SolLeftMotor.getSoftLimit(SoftLimitDirection.kForward)&&(m_SolRightMotor.getEncoder().getPosition()>percentHeight*m_SolRightMotor.getSoftLimit(SoftLimitDirection.kForward)))
+  {return false;
+
+  }else{
+    return true;
+  }
+  }
+
+  public void ClimberUpToPosition(double percentHeight){
+    if (m_SolRightMotor.getEncoder().getPosition()<percentHeight*m_SolRightMotor.getSoftLimit(SoftLimitDirection.kForward)){
+        m_SolRightMotor.set(1.0);
+    }
+    if (m_SolLeftMotor.getEncoder().getPosition()<percentHeight*m_SolLeftMotor.getSoftLimit(SoftLimitDirection.kForward)){
+      m_SolLeftMotor.set(1.0);
+  }
+}
+
+
+public boolean ClimberUpAtPosition(double percentHeight){
+  if (m_SolLeftMotor.getEncoder().getPosition()<percentHeight*m_SolLeftMotor.getSoftLimit(SoftLimitDirection.kForward)&&(m_SolRightMotor.getEncoder().getPosition()>percentHeight*m_SolRightMotor.getSoftLimit(SoftLimitDirection.kForward)))
+  {return false;
+
+  }else{
+    return true;
+  }
   }
 
   public void extendSol(){
@@ -134,8 +172,8 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Left Climb Pos", m_SolLeftMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("Right Climb Pos", m_SolRightMotor.getEncoder().getPosition());
-    //SmartDashboard.putBoolean("Left Down Limit", m_LeftClimbDownLimit.get());
-    //SmartDashboard.putBoolean("Right Down Limit", m_RightClimbDownLimit.get());
+    SmartDashboard.putBoolean("Left Down Limit", m_LeftClimbDownLimit.get());
+    SmartDashboard.putBoolean("Right Down Limit", m_RightClimbDownLimit.get());
     //SmartDashboard.putBoolean("At Bottom", atBottom());
     //SmartDashboard.putBoolean("At Top", atTop());
   

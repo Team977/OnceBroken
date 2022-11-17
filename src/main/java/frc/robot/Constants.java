@@ -53,7 +53,7 @@ public final class Constants {
 
 
     public static final double AutoShooterRPM = 3000;
-    public static final double AutoHoodPosition = 0.42;
+    public static final double AutoHoodPosition =0.42;
 
     public static final double lowHoodPosition = 0.4;
 
@@ -61,15 +61,15 @@ public final class Constants {
 
     public static final double ball1Xpos = -0.658;
     public static final double ball1Ypos = -3.83;
-    public static final double ball2Xpos = -3.174;
+    public static final double ball2Xpos = -2.89;//-3.4;//-3.174;
     public static final double ball2Ypos = -2.243;
     public static final double ball3Xpos = -3.287;
     public static final double ball3Ypos = 2.074;
     public static final double ball4Xpos = -7.165;
     public static final double ball4Ypos = -2.99;
 
-    public static final double approach2X = -2.586;
-    public static final double approach2Y = -2.613;
+    public static final double approach2X = -2.7;//-2.586;
+    public static final double approach2Y = -2.913;
     public static final double approach2theta = 147.75;
     
     public static final double approach4X = -6.371;
@@ -81,21 +81,22 @@ public final class Constants {
     public static final double return2theta = -145;
 
     public static final double pos1X = -0.686;
-    public static final double pos1Y = -2.753;
+    public static final double pos1Y = -2.4;//-2.753;
     public static final double pos1theta = -88.5;
 
-    public static final double pos2X = -1.959;
-    public static final double pos2Y = -1.702;
+    public static final double pos2X = -1.559;//-1.959
+    public static final double pos2Y = -1.52;//-1.702;
     public static final double pos2theta = -156;
 
-    public static final double pos3X = -2.505;
-    public static final double pos3Y = 1.332;
+    public static final double pos3X = -2.265;
+    public static final double pos3Y = 1.02;
     public static final double pos3theta = 136;
 
     public static final double kickItWaitTime = 1.2;
-    public static final double shooterReverseTime = 0.20;
-    public static final double shooterAutoTime = 2.0;
-    public static final double AutoMoveTimeout = 3.0;
+    public static final double shooterReverseTime = 0.25;
+    public static final double shooterAutoTime = 1.5;
+    public static final double AutoMoveTimeout = 2.50;
+    public static final double AutoLoadingWaitTime = 2.0;
 
     public static final double nominalVoltage = 12.0;
     public static final double maxDriveVoltage = 10.0;

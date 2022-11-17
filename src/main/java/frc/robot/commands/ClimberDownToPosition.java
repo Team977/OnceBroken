@@ -5,18 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climber;
 
-public class SetShooterRPMAuto extends CommandBase {
-  private Shooter m_Shooter;
-  /** Creates a new SetShooterRPM. */
-  public SetShooterRPMAuto(Shooter subsystem) {
-    m_Shooter = subsystem;
-    
-    addRequirements(m_Shooter);
+public class ClimberDownToPosition extends CommandBase {
+  private Climber m_climber;
+  private double m_percent;
+  /** Creates a new ClimberDown. */
+  public ClimberDownToPosition(Climber subsystem, double percent) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_climber = subsystem;
+    m_percent = percent;
+    addRequirements(m_climber);
   }
 
   // Called when the command is initially scheduled.
@@ -26,22 +25,18 @@ public class SetShooterRPMAuto extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    //m_Shooter.setRPM(RobotContainer.getRPM());
-    m_Shooter.setRPM(Constants.AutoShooterRPM);
-  m_Shooter.setHoodPosition(Constants.AutoHoodPosition);
-
+    m_climber.ClimberDownToPosition(m_percent);;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Shooter.setRPM(0.0);
+    m_climber.moveSol(0.0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_climber.ClimberDownAtPosition(m_percent);
   }
 }

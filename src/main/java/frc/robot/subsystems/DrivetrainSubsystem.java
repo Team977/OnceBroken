@@ -185,6 +185,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
     //m_navx.setAngleAdjustment(0.0);
   }
 
+  public void publishAccel(){
+          SmartDashboard.putNumber("AccelX", m_navx.getRawAccelX());
+          SmartDashboard.putNumber("AccelY", m_navx.getRawAccelY());
+          SmartDashboard.putNumber("AccelZ", m_navx.getRawAccelZ());
+  }
+
+  public double getAccelX(){
+          return m_navx.getRawAccelX();
+  }
+
   public Rotation2d getGyroscopeRotation() {
 
         //return Rotation2d.fromDegrees(-m_navx.getYaw());
@@ -314,6 +324,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("odometry Y", m_odometry.getPoseMeters().getY());
 SmartDashboard.putNumber("Gyro Offset", gyro_angle_adjust);
 
+publishAccel();
     //SmartDashboard.putString("Juke Location", m_rotationCenter.toString());
 
     //SmartDashboard.putNumber("Compass", m_navx.getCompassHeading());
