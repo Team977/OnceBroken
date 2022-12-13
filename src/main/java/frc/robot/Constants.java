@@ -68,7 +68,7 @@ public final class Constants {
     public static final double ball4Xpos = -7.165;
     public static final double ball4Ypos = -2.99;
 
-    public static final double approach2X = -2.7;//-2.586;
+    public static final double approach2X = -2.9;//-2.586;
     public static final double approach2Y = -2.913;
     public static final double approach2theta = 147.75;
     
